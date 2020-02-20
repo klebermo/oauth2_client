@@ -32,9 +32,6 @@ public class Security extends WebSecurityConfigurerAdapter {
 							.logoutUrl("/logout")
 					    .logoutSuccessUrl("/").permitAll()
 					)
-          .oauth2Client(c -> c
-              .authorizationCodeGrant()
-          )
 					.oauth2Login();
 	}
 }
