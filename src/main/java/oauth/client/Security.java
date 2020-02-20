@@ -19,7 +19,7 @@ public class Security extends WebSecurityConfigurerAdapter {
 	public void configure(HttpSecurity http) throws Exception {
 			http
 					.authorizeRequests(a -> a
-							.antMatchers("/", "/error", "/css/**", "/js/**", "/img/**").permitAll()
+							.antMatchers("/", "/login" ,"/css/**", "/js/**", "/img/**").permitAll()
 							.anyRequest().authenticated()
 					)
 					.exceptionHandling(e -> e
@@ -32,6 +32,9 @@ public class Security extends WebSecurityConfigurerAdapter {
 							.logoutUrl("/logout")
 					    .logoutSuccessUrl("/").permitAll()
 					)
+          .oauth2Client(c -> c
+              .authorizationCodeGrant()
+          )
 					.oauth2Login();
 	}
 }
