@@ -9,4 +9,9 @@ public class Home {
   public String index() {
     return "index";
   }
+
+  @RequestMapping(value="/login", method=RequestMethod.GET)
+  public String login(@RequestParam("code") String code) {
+    return "redirect:/";
+  }
 }
