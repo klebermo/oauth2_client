@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.oauth2.client.web.HttpSessionOAuth2AuthorizationRequestRepository;
 import org.springframework.security.oauth2.client.endpoint.NimbusAuthorizationCodeTokenResponseClient;
+import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationCodeTokenResponseClient;
+import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
 
 @Configuration
 @EnableWebSecurity
@@ -34,11 +36,17 @@ public class Security extends WebSecurityConfigurerAdapter {
 							.logoutUrl("/logout")
 					    .logoutSuccessUrl("/").permitAll()
           .and()
-					.oauth2Login()
+          .oauth2Client(c -> c
+              .authorizationCodeGrant()
+                  .accessTokenResponseClient(new DefaultAuthorizationCodeTokenResponseClient())
+                  .authorizationRequestRepository(new HttpSessionOAuth2AuthorizationRequestRepository())
+          )
+					.oauth2Login(l -> l
               .authorizationEndpoint().authorizationRequestRepository(new HttpSessionOAuth2AuthorizationRequestRepository())
               .and()
               .redirectionEndpoint().baseUri("/")
               .and()
-              .tokenEndpoint().accessTokenResponseClient(new NimbusAuthorizationCodeTokenResponseClient());
+              .tokenEndpoint().accessTokenResponseClient(new NimbusAuthorizationCodeTokenResponseClient())
+          );
 	}
 }
