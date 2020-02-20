@@ -37,7 +37,7 @@ public class Security extends WebSecurityConfigurerAdapter {
 					.oauth2Login()
               .authorizationEndpoint().authorizationRequestRepository(new HttpSessionOAuth2AuthorizationRequestRepository())
               .and()
-              .redirectionEndpoint().baseUri("/login")
+              .redirectionEndpoint().baseUri("/")
               .and()
               .tokenEndpoint().accessTokenResponseClient(new NimbusAuthorizationCodeTokenResponseClient());
 	}
