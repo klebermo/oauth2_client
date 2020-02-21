@@ -45,7 +45,8 @@ public class Security extends WebSecurityConfigurerAdapter {
 							.logoutUrl("/logout")
 					    .logoutSuccessUrl("/").permitAll()
           .and()
-					.oauth2Login();
+					.oauth2Login()
+              .clientRegistrationRepository(clientRegistrationRepository());
 	}
 
   @Bean
