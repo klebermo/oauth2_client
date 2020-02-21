@@ -22,6 +22,8 @@ import org.springframework.security.oauth2.core.AuthenticationMethod;
 import java.util.List;
 import java.util.ArrayList;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.oauth2.client.web.HttpSessionOAuth2AuthorizationRequestRepository;
+import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
 
 @Configuration
 @EnableWebSecurity
@@ -45,8 +47,14 @@ public class Security extends WebSecurityConfigurerAdapter {
 							.logoutUrl("/logout")
 					    .logoutSuccessUrl("/").permitAll()
           .and()
-					.oauth2Login()
-              .clientRegistrationRepository(clientRegistrationRepository());
+          .oauth2Client(c -> c
+              .authorizationCodeGrant()
+                  .authorizationRequestRepository(new HttpSessionOAuth2AuthorizationRequestRepository())
+                  .authorizationRequestResolver(new DefaultOAuth2AuthorizationRequestResolver(clientRegistrationRepository(), "http://localhost:8080/oauth/authorize"))
+          )
+					.oauth2Login(l -> l
+              .clientRegistrationRepository(clientRegistrationRepository())
+          );
 	}
 
   @Bean
